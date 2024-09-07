@@ -1,8 +1,0 @@
-/**
- * 
- */
-/**
- * 
- */
-module Luthieria_Program {
-}
