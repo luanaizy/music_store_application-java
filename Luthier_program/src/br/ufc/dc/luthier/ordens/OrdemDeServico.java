@@ -3,20 +3,24 @@ package br.ufc.dc.luthier.ordens;
 import java.util.Vector;
 
 import br.ufc.dc.luthier.instrumentos.Instrumento;
+import br.ufc.dc.luthier.instrumentos.estados.EstadoInstrumento;
 import br.ufc.dc.luthier.materiais.Material;
+import br.ufc.dc.luthier.ordens.situacao.SituacaoOrdem;
 import br.ufc.dc.luthier.pessoas.Cliente;
 import br.ufc.dc.luthier.pessoas.Funcionario;
 import br.ufc.dc.luthier.servicos.ServicoAbstract;
 import java.util.Date;
 
 public class OrdemDeServico {
-	private int numero;
+
+	private String numero;
 	private Vector<ServicoAbstract> servicos;
-	private Cliente cliente;
+	private Cliente cliente; //vem com instrumento
 	private Instrumento instrumento;
+	private EstadoInstrumento estado_do_instrumento; //vem com instrumento
 	private String data_prevista_entrega ;
 	private Funcionario atendente;
-	
+	private SituacaoOrdem situacao;
 	private Vector<Material> materiais_usados;
 	private double valor;
 	
@@ -29,12 +33,14 @@ public class OrdemDeServico {
 		protected String getMensagem() {return mensagem;}
 	}
 	
-	protected OrdemDeServico(int numero, Vector<ServicoAbstract> servicos, Cliente cliente, 
+	public OrdemDeServico( Vector<ServicoAbstract> servicos, 
 			Instrumento instrumento, String data_prevista_entrega, Funcionario atendente ) {
-		this.numero = numero;
+
 		this.servicos = servicos;
-		this.setCliente(cliente);
+		this.setSituacao(SituacaoOrdem.ABERTA);
 		this.setInstrumento(instrumento);
+		this.setCliente(this.instrumento.getProprietario());
+		estado_do_instrumento = instrumento.getEstado();
 		this.setData_prevista_entrega(data_prevista_entrega);
 		this.setAtendente(atendente);
 		
@@ -42,6 +48,7 @@ public class OrdemDeServico {
 		this.data_de_entrada = new Date();
 		
 		materiais_usados = new Vector<Material>();
+		notificacoes = new Vector<Notificacao>();
 		calcularValor();
 		
 		Notificacao notificacao1 = new Notificacao();
@@ -73,18 +80,23 @@ public class OrdemDeServico {
 	}
 	
 	
+	public void setNumero(String numero) {this.numero = numero;}
+	public String getNumero() {return numero;}
 	
-	public int getNumero() {return numero;}
 	public Vector<ServicoAbstract> getServicos(){return servicos;}
 	public void setServicos(Vector<ServicoAbstract> servicos) {this.servicos = servicos;}
+	
 	public Cliente getCliente() {return cliente;}
 	public void setCliente(Cliente cliente) {this.cliente = cliente;}
+	
 	public Instrumento getInstrumento() {return instrumento;}
 	public void setInstrumento(Instrumento instrumento) {this.instrumento = instrumento;}
+	
 	public String getData_prevista_entrega() {return data_prevista_entrega;}
 	public void setData_prevista_entrega(String data_prevista_entrega) {
 		this.data_prevista_entrega = data_prevista_entrega;
 	}
+	
 	public Funcionario getAtendente() {	return atendente;}
 	public void setAtendente(Funcionario atendente) {this.atendente = atendente;}
 	
@@ -96,6 +108,49 @@ public class OrdemDeServico {
 
 	public String getDataDeEntrada() {
 		return data_de_entrada.toString();
+	}
+
+	public SituacaoOrdem getSituacao() {return situacao;}
+	public void setSituacao(SituacaoOrdem situacao) {this.situacao = situacao;}
+
+	public void setEstadoDoInstrumento(EstadoInstrumento estado) {
+		this.instrumento.setEstado(estado);
+	}
+	
+	public void print() {
+	    System.out.println("Número da Ordem de Serviço: " + numero);
+	    System.out.println("Cliente: " + cliente.getNome());
+	    System.out.println("Instrumento: " + instrumento.getTipo() + " - " + instrumento.getMarca());
+	    System.out.println("Estado do Instrumento: " + estado_do_instrumento.name());
+	    System.out.println("Data Prevista de Entrega: " + data_prevista_entrega);
+	    System.out.println("Atendente: " + atendente.getNome());
+	    System.out.println("Situação da Ordem: " + situacao);
+	    
+	    System.out.println("Serviços:");
+	    for (ServicoAbstract servico : servicos) {
+	        System.out.println(" - " + servico.getDescricao() + " (R$ " + servico.getValor() + ")");
+	    }
+
+	    System.out.println("Materiais Usados:");
+	    if (materiais_usados.isEmpty()) {
+	        System.out.println(" - Nenhum material utilizado.");
+	    } else {
+	        for (Material material : materiais_usados) {
+	            System.out.println(" - " + material.getTipo() + " da marca " + material.getMarca() + " (R$ " + material.getValor() + ")");
+	        }
+	    }
+	    
+	    System.out.println("Valor Total: R$ " + valor);
+	    System.out.println("Data de Entrada: " + data_de_entrada);
+	    
+	    System.out.println("Notificações:");
+	    if (notificacoes.isEmpty()) {
+	        System.out.println(" - Nenhuma notificação.");
+	    } else {
+	        for (Notificacao notificacao : notificacoes) {
+	            System.out.println(" - " + notificacao.getMensagem());
+	        }
+	    }
 	}
 
 }

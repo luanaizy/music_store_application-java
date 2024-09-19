@@ -1,4 +1,7 @@
 package br.ufc.dc.luthier.servicos;
 
-public class ServicoManutencao extends ServicoAbstract {
+public abstract class ServicoManutencao extends ServicoAbstract {
+	public ServicoManutencao(String descricao, double valor) {
+		super(descricao, valor);
+	}
 }
