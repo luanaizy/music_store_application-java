@@ -11,12 +11,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import br.ufc.dc.luthier.controllers.ClienteController;
 import br.ufc.dc.luthier.gui.listeners.clientes.BotaoCadastrarClienteListener;
 import br.ufc.dc.luthier.gui.listeners.clientes.BotaoEditarClienteListener;
 import br.ufc.dc.luthier.gui.listeners.clientes.BotaoExcluirClienteListener;
+import br.ufc.dc.luthier.pessoas.Cliente;
+import br.ufc.dc.luthier.repositorios.clientes.IRepositorioClientes;
 
 public class JanelaClientes extends JFrame {
-	public JanelaClientes() {
+	public JanelaClientes(ClienteController cliente_controller) {
 		setSize(800,700);
 		setLocationRelativeTo(null);
 		
@@ -24,33 +27,26 @@ public class JanelaClientes extends JFrame {
 		pane_lista.setLayout(new BoxLayout(pane_lista, BoxLayout.Y_AXIS));
 		JPanel pane_botao = new JPanel();
 		
-        ArrayList<String[]> clientes = new ArrayList<>();
-        clientes.add(new String[] {"João Silva", "123.456.789-00"});
-        clientes.add(new String[] {"Maria Oliveira", "987.654.321-00"});
-        clientes.add(new String[] {"Carlos Souza", "456.789.123-00"});
-        clientes.add(new String[] {"Carlos Souza", "456.789.123-00"});
-        clientes.add(new String[] {"Carlos Souza", "456.789.123-00"});
-        clientes.add(new String[] {"Carlos Souza", "456.789.123-00"});
-        clientes.add(new String[] {"Carlos Souza", "456.789.123-00"});
-        clientes.add(new String[] {"Carlos Souza", "456.789.123-00"});
-        clientes.add(new String[] {"Carlos Souza", "456.789.123-00"});
-        clientes.add(new String[] {"Carlos Souza", "456.789.123-00"});
-        clientes.add(new String[] {"Carlos Souza", "456.789.123-00"});
-        clientes.add(new String[] {"Carlos Souza", "456.789.123-00"});
+		//pegar os clientes
+
         
-        for (String[] cliente : clientes) {
-            
-            JLabel label_nome = new JLabel("Nome: " + cliente[0]);
-            JLabel label_cpf = new JLabel("CPF: " + cliente[1]);
+        for (int i=0; i<cliente_controller.qtd_clientes();i++) {
+            Cliente cliente = cliente_controller.get(i);
+            JLabel label_nome = new JLabel("Nome: " + cliente.getNome());
+            JLabel label_cpf = new JLabel("CPF: " + cliente.getCpf());
+            JLabel label_endereco = new JLabel("Endereco: " + cliente.getEndereco());
+            JLabel label_telefone = new JLabel("Telefone: " + cliente.getTelefone());
             JPanel panel_labels = new JPanel();
             panel_labels.setLayout(new BoxLayout(panel_labels, BoxLayout.Y_AXIS));
             panel_labels.add(label_nome);
             panel_labels.add(label_cpf);
+            panel_labels.add(label_endereco);
+            panel_labels.add(label_telefone);
             
             JButton botao_editar = new JButton("Editar");
-            botao_editar.addActionListener(new BotaoEditarClienteListener());
+            botao_editar.addActionListener(new BotaoEditarClienteListener(this, cliente_controller,i));
             JButton botao_excluir = new JButton("Excluir");
-            botao_excluir.addActionListener(new BotaoExcluirClienteListener());
+            botao_excluir.addActionListener(new BotaoExcluirClienteListener(cliente_controller, cliente.getCpf()));
             botao_editar.setAlignmentX(CENTER_ALIGNMENT);
             botao_excluir.setAlignmentX(CENTER_ALIGNMENT);
             JPanel panel_botoes = new JPanel();
@@ -71,7 +67,7 @@ public class JanelaClientes extends JFrame {
         scroll_pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         
 		JButton cadastrar_botao = new JButton("Cadastrar Cliente");
-		cadastrar_botao.addActionListener(new BotaoCadastrarClienteListener());
+		cadastrar_botao.addActionListener(new BotaoCadastrarClienteListener(cliente_controller, this));
 
 		pane_botao.add(cadastrar_botao);
 		

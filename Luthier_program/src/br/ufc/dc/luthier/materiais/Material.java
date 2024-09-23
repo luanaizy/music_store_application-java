@@ -15,7 +15,7 @@ public class Material {
 	public void setCodigo(String codigo) {this.codigo = codigo;}
 	public double getValor() {return valor;}
 	public String getTipo() {return tipo;}
-	public String getMarca() {return tipo;}
+	public String getMarca() {return marca;}
 	public String getCodigo() {return codigo;}
 	
 	public void print() {

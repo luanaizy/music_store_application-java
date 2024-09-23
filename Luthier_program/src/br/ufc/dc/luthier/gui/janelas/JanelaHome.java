@@ -1,6 +1,5 @@
 package br.ufc.dc.luthier.gui.janelas;
 
-import java.awt.Dimension;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -9,13 +8,19 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import br.ufc.dc.luthier.controllers.ClienteController;
+import br.ufc.dc.luthier.controllers.FuncionarioController;
+import br.ufc.dc.luthier.controllers.InstrumentoController;
+import br.ufc.dc.luthier.controllers.MaterialController;
+import br.ufc.dc.luthier.controllers.OrdemController;
 import br.ufc.dc.luthier.gui.listeners.HomeBotaoClientesListener;
 import br.ufc.dc.luthier.gui.listeners.HomeBotaoInstrumentosListener;
 import br.ufc.dc.luthier.gui.listeners.HomeBotaoOrdensListener;
 
 public class JanelaHome extends JFrame {
-	
-	public JanelaHome(){
+
+	public JanelaHome(ClienteController cliente_controller, FuncionarioController funcionario_controller, 
+			InstrumentoController instrumento_controller, MaterialController material_controller, OrdemController  ordem_controller){
 
 		JLabel titulo = new JLabel("Bem vindo ao Luthier");
 		JButton botao_clientes = new JButton ("Clientes");
@@ -25,9 +30,10 @@ public class JanelaHome extends JFrame {
 		JPanel pane = new JPanel();
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));  
 		
-		HomeBotaoClientesListener botao_clientes_listener = new HomeBotaoClientesListener();
-		HomeBotaoInstrumentosListener botao_instrumentos_listener = new HomeBotaoInstrumentosListener();
-		HomeBotaoOrdensListener botao_ordens_listener = new HomeBotaoOrdensListener();
+		HomeBotaoClientesListener botao_clientes_listener = new HomeBotaoClientesListener(cliente_controller);
+		HomeBotaoInstrumentosListener botao_instrumentos_listener = new HomeBotaoInstrumentosListener(cliente_controller, instrumento_controller);
+		HomeBotaoOrdensListener botao_ordens_listener = new HomeBotaoOrdensListener(cliente_controller, funcionario_controller, instrumento_controller, 
+																	 material_controller,ordem_controller);
 
         titulo.setAlignmentX(CENTER_ALIGNMENT);
         botao_clientes.setAlignmentX(CENTER_ALIGNMENT);

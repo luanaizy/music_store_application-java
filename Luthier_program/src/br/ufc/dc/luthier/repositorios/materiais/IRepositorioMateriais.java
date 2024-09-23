@@ -8,5 +8,5 @@ public interface IRepositorioMateriais {
 	public void remover(String codigo) throws MatInexException;
 	public Material procurar(String codigo);
 	public Material get(int index) throws ArrayIndexOutOfBoundsException;
-	public int qtd_funcionarios();
+	public int qtd_materiais();
 }

@@ -11,10 +11,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import br.ufc.dc.luthier.controllers.ClienteController;
 import br.ufc.dc.luthier.gui.listeners.clientes.BotaoActionCadastrarClienteListener;
 
 public class JanelaCadastrarCliente extends JFrame {
-	public JanelaCadastrarCliente() {
+	public JanelaCadastrarCliente(ClienteController cliente_controller, JanelaClientes owner) {
 		setSize(600,450);
 		setLocationRelativeTo(null);
 		
@@ -45,7 +46,8 @@ public class JanelaCadastrarCliente extends JFrame {
 		
 		JButton botao_cadastrar = new JButton("Cadastrar");
 		botao_cadastrar.setAlignmentX(Component.CENTER_ALIGNMENT);
-		botao_cadastrar.addActionListener(new BotaoActionCadastrarClienteListener());
+		botao_cadastrar.addActionListener(new BotaoActionCadastrarClienteListener(owner, cliente_controller, nome_input,  cpf_input,
+				endereco_input, telefone_input));
 		
 		JPanel pane = new JPanel();
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));  

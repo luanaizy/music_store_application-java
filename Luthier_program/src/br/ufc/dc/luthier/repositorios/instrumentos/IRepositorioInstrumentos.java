@@ -8,10 +8,10 @@ import br.ufc.dc.luthier.pessoas.Cliente;
 
 public interface IRepositorioInstrumentos {
 	public void inserir(Instrumento instrumento)throws InstJaExisteException;
-	public void remover(String codigo) throws InstInexException;
-	public Instrumento procurar(String codigo);
-	public int procurar_index(String codigo);
-	public void modificar(int index, String numero_de_serie, String tipo, String marca,
+	public void remover(String num_serie) throws InstInexException;
+	public Instrumento procurar(String num_serie);
+	public int procurar_index(String num_serie);
+	public void modificar(int index, String num_serie, String tipo, String marca,
 			EstadoInstrumento estado, Cliente proprietario) throws InstJaExisteException;
 	public Instrumento get(int index) throws ArrayIndexOutOfBoundsException  ;
 	public Instrumento[] listar();

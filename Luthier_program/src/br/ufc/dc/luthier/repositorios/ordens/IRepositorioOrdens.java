@@ -18,7 +18,7 @@ public interface IRepositorioOrdens {
 	public void remover(String numero) throws OrdemInexistenteException;
 	public OrdemDeServico procurar(String numero);
 	public int procurar_index(String numero);
-	public void modificar(int index, Vector<ServicoAbstract> servicos,Cliente cliente, 
+	public void modificar(int index, Vector<ServicoAbstract> servicos, 
 			Instrumento instrumento, EstadoInstrumento estado_do_instrumento, 
 			String data_prevista_entrega, Funcionario atendente, SituacaoOrdem situacao, 
 			Vector<Material> materiais_usados) throws ExisteOrdemAbertaPInstrException;

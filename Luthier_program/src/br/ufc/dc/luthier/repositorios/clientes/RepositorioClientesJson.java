@@ -91,18 +91,18 @@ public class RepositorioClientesJson implements IRepositorioClientes {
 		}
 	}
 	
-	public void modificar(int index,String cpf, String nome, String endereco, String telefone) throws CJEException {
+	public void modificar(int index,String nome,String cpf,  String endereco, String telefone) throws CJEException {
 		
 		for (Cliente cliente_ : clientes) {
-			if(clientes.get(index).getCpf().equals(cliente_.getCpf())) {
+			if(cliente_ != clientes.get(index) && cpf.equals(cliente_.getCpf())) {
 				throw new CJEException(cliente_.getCpf());
 			}
 		}
-		
-		clientes.get(index).setCpf(cpf);
-		clientes.get(index).setNome(nome);
-		clientes.get(index).setEndereco(endereco);
-		clientes.get(index).setTelefone(telefone);
+		Cliente cliente_atual = clientes.get(index);
+		cliente_atual.setCpf(cpf);
+		cliente_atual.setNome(nome);
+		cliente_atual.setEndereco(endereco);
+		cliente_atual.setTelefone(telefone);
 		
 		try {
 			arquivo_escrita = new FileWriter(path_arquivo);

@@ -5,6 +5,7 @@ import java.util.Vector;
 import br.ufc.dc.luthier.instrumentos.Instrumento;
 import br.ufc.dc.luthier.instrumentos.estados.EstadoInstrumento;
 import br.ufc.dc.luthier.materiais.Material;
+import br.ufc.dc.luthier.ordens.notificacoes.Notificacao;
 import br.ufc.dc.luthier.ordens.situacao.SituacaoOrdem;
 import br.ufc.dc.luthier.pessoas.Cliente;
 import br.ufc.dc.luthier.pessoas.Funcionario;
@@ -27,12 +28,6 @@ public class OrdemDeServico {
 	private Vector<Notificacao> notificacoes;
 	private Date data_de_entrada;
 	
-	private class Notificacao{
-		private String mensagem;
-		protected void setMensagem(String nova_mensagem) {mensagem = nova_mensagem;}
-		protected String getMensagem() {return mensagem;}
-	}
-	
 	public OrdemDeServico( Vector<ServicoAbstract> servicos, 
 			Instrumento instrumento, String data_prevista_entrega, Funcionario atendente ) {
 
@@ -51,7 +46,7 @@ public class OrdemDeServico {
 		notificacoes = new Vector<Notificacao>();
 		calcularValor();
 		
-		Notificacao notificacao1 = new Notificacao();
+		Notificacao notificacao1 = new Notificacao("");
 		String servicos_msg = new String("");
 		for (int i=0; i<servicos.size(); i++) {
 			servicos_msg = servicos_msg + servicos.get(i).getDescricao() + ", ";
@@ -70,13 +65,16 @@ public class OrdemDeServico {
 		notificacoes.add(notificacao1);
 	}
 	
-	protected void calcularValor() {
+	public void calcularValor() {
+		double valor_ser = 0;
+		double valor_mat = 0;
 		for (int i=0 ; i<servicos.size(); i++ ) {
-			valor = valor + servicos.get(i).getValor();
+			valor_ser = valor_ser + servicos.get(i).getValor();
 		}
 		for (int i=0 ; i<materiais_usados.size(); i++) {
-			valor = valor + materiais_usados.get(i).getValor();
+			valor_mat = valor_mat + materiais_usados.get(i).getValor();
 		}
+		this.valor = valor_ser + valor_mat;
 	}
 	
 	
@@ -86,13 +84,16 @@ public class OrdemDeServico {
 	public Vector<ServicoAbstract> getServicos(){return servicos;}
 	public void setServicos(Vector<ServicoAbstract> servicos) {this.servicos = servicos;}
 	
+	public Vector<Notificacao> getNotificacoes(){return notificacoes;}
+	public void setNotificacoes(Vector<Notificacao> notificacoes) {this.notificacoes = notificacoes;}
+	
 	public Cliente getCliente() {return cliente;}
 	public void setCliente(Cliente cliente) {this.cliente = cliente;}
 	
 	public Instrumento getInstrumento() {return instrumento;}
 	public void setInstrumento(Instrumento instrumento) {this.instrumento = instrumento;}
 	
-	public String getData_prevista_entrega() {return data_prevista_entrega;}
+	public String getDataPrevistaEntrega() {return data_prevista_entrega;}
 	public void setData_prevista_entrega(String data_prevista_entrega) {
 		this.data_prevista_entrega = data_prevista_entrega;
 	}

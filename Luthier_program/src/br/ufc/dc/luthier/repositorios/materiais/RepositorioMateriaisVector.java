@@ -5,7 +5,7 @@ import java.util.Vector;
 import br.ufc.dc.luthier.exceptions.MatInexException;
 import br.ufc.dc.luthier.materiais.Material;
 
-public class RepositorioMateriaisVector {
+public class RepositorioMateriaisVector implements IRepositorioMateriais{
 private Vector<Material> materiais;
 private int incrementador;
 	
@@ -49,15 +49,9 @@ private int incrementador;
 		return materiais.get(index);
 	}
 	
-	//public Material[] listar() {
-	//	Material[] lista_materiais = new Material[materiais.size()];
-	//	for(int i=0; i<lista_materiais.length;i++) {
-	//		lista_materiais[i]=materiais.get(i);
-	//	}
-	//	return lista_materiais;
-	//}
-	
-	public int tamanho() {
+	public int qtd_materiais() {
 		return materiais.size();
 	}
+	
+
 }

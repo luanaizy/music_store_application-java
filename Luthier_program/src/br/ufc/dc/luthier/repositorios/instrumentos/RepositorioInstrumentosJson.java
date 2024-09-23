@@ -79,7 +79,7 @@ public class RepositorioInstrumentosJson implements IRepositorioInstrumentos {
 			EstadoInstrumento estado, Cliente proprietario) throws InstJaExisteException  {
 		
 		for (Instrumento instrumento_ : instrumentos) {
-			if(instrumento_.getNumDeSerie().equals(instrumentos.get(index).getNumDeSerie())) {
+			if(instrumento_.getNumDeSerie().equals(instrumentos.get(index).getNumDeSerie()) && instrumento_ != instrumentos.get(index)) {
 				throw new InstJaExisteException(instrumento_.getNumDeSerie());
 			}
 		}

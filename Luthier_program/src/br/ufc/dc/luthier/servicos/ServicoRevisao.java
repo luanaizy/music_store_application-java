@@ -4,20 +4,22 @@ import java.util.Vector;
 
 public class ServicoRevisao extends ServicoAbstract {
 	private String resultado;
-	private Vector<ServicoManutencao> servicos_recomendados;
+	private ServicoManutencao servico_recomendado;
 	
-	public ServicoRevisao(String descricao, double valor) {
+	public ServicoRevisao(String descricao, double valor, String resultado) {
 		super(descricao, valor);
+		this.resultado = resultado;
+		servico_recomendado = null;
 	}
 
 	public String getResultado() {return resultado;}
 
 	public void setResultado(String resultado) {this.resultado = resultado;}
 
-	public Vector<ServicoManutencao> getServicosRecomendados() {return servicos_recomendados;}
+	public ServicoManutencao getServicoRecomendado() {return servico_recomendado;}
 
-	public void setServicosRecomendados(Vector<ServicoManutencao> servicos_recomendados) {
-		this.servicos_recomendados = servicos_recomendados;
+	public void setServicoRecomendado(ServicoManutencao servico_recomendado) {
+		this.servico_recomendado = servico_recomendado;
 	}
 
 }

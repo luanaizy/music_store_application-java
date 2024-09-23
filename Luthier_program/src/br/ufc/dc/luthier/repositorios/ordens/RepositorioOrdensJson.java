@@ -24,6 +24,7 @@ import br.ufc.dc.luthier.ordens.situacao.SituacaoOrdem;
 import br.ufc.dc.luthier.pessoas.Cliente;
 import br.ufc.dc.luthier.pessoas.Funcionario;
 import br.ufc.dc.luthier.servicos.ServicoAbstract;
+import br.ufc.dc.luthier.servicos.ServicoAbstractDeserializer;
 
 public class RepositorioOrdensJson implements IRepositorioOrdens {
 	private Vector<OrdemDeServico> ordens;
@@ -44,11 +45,13 @@ public class RepositorioOrdensJson implements IRepositorioOrdens {
 		if (path_arquivo.exists()) {
             try {
                 arquivo_leitura = new FileReader(path_arquivo);
-                Gson gson = new Gson();
- 
-                Type tipo_lista_de_ordens = new TypeToken<Vector<OrdemDeServico>>(){}.getType();
-                Vector<OrdemDeServico> ordens_do_arquivo = gson.fromJson(arquivo_leitura, tipo_lista_de_ordens);
-                arquivo_leitura.close();
+                Gson gson = new GsonBuilder()
+                        .registerTypeAdapter(ServicoAbstract.class, new ServicoAbstractDeserializer())  // Adiciona o desserializador personalizado
+                        .create();
+
+                    Type tipo_lista_de_ordens = new TypeToken<Vector<OrdemDeServico>>(){}.getType();
+                    Vector<OrdemDeServico> ordens_do_arquivo = gson.fromJson(arquivo_leitura, tipo_lista_de_ordens);
+                    arquivo_leitura.close();
 
                 if (ordens_do_arquivo != null) {
                     ordens = ordens_do_arquivo; 
@@ -110,24 +113,26 @@ public class RepositorioOrdensJson implements IRepositorioOrdens {
 		}
 	}
 	
-	public void modificar(int index, Vector<ServicoAbstract> servicos,Cliente cliente, 
+	public void modificar(int index, Vector<ServicoAbstract> servicos,
 			Instrumento instrumento, EstadoInstrumento estado_do_instrumento, 
 			String data_prevista_entrega, Funcionario atendente, SituacaoOrdem situacao, 
 			Vector<Material> materiais_usados) throws ExisteOrdemAbertaPInstrException {
 		
 		for (OrdemDeServico ordem_ : ordens) {
-			if(ordens.get(index).getInstrumento().getNumDeSerie().equals(ordem_.getInstrumento().getNumDeSerie())) {
+			if(ordens.get(index).getInstrumento().getNumDeSerie().equals(ordem_.getInstrumento().getNumDeSerie()) && ordem_ != ordens.get(index)) {
 				throw new ExisteOrdemAbertaPInstrException(ordem_.getNumero());
 			}
 		}
 			
 		ordens.get(index).setServicos(servicos);
-		ordens.get(index).setCliente(cliente);
 		ordens.get(index).setInstrumento(instrumento);
+		ordens.get(index).setCliente(instrumento.getProprietario());
 		ordens.get(index).setEstadoDoInstrumento(estado_do_instrumento);
 		ordens.get(index).setData_prevista_entrega(data_prevista_entrega);
 		ordens.get(index).setAtendente(atendente);
 		ordens.get(index).setSituacao(situacao);
+		ordens.get(index).setMateriais(materiais_usados);
+		ordens.get(index).calcularValor();
 		
 		try {
 			arquivo_escrita = new FileWriter(path_arquivo);

@@ -8,7 +8,7 @@ public interface IRepositorioFuncionarios {
 	public void inserir(Funcionario instrumento) throws FuncJaInseridoException;
 	public void remover(String codigo) throws FuncInexistenteException;
 	public Funcionario procurar(String codigo);
-	public void modificar(int index,String cpf, String nome, String endereco, String telefone);
+	public void modificar(int index,String cpf, String nome, String endereco, String telefone) throws FuncJaInseridoException;
 	public Funcionario get(int index) throws ArrayIndexOutOfBoundsException;
 	public int qtd_funcionarios();
 }

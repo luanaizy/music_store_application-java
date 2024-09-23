@@ -4,6 +4,8 @@ import java.util.Vector;
 
 import br.ufc.dc.luthier.exceptions.FuncInexistenteException;
 import br.ufc.dc.luthier.exceptions.FuncJaInseridoException;
+import br.ufc.dc.luthier.exceptions.InstJaExisteException;
+import br.ufc.dc.luthier.instrumentos.Instrumento;
 import br.ufc.dc.luthier.pessoas.Funcionario;
 
 public class RepositorioFuncionariosVector implements IRepositorioFuncionarios {
@@ -22,7 +24,7 @@ private int incrementador;
 			}
 		}
 		funcionario.setCodigo(String.valueOf(incrementador));
-		funcionarios.add(funcionario); //coloca codigo ao funcionario ao ser inserido
+		funcionarios.add(funcionario); //coloca o codigo ao funcionario ao ser inserido
 		incrementador++;
 	}
 	
@@ -38,7 +40,14 @@ private int incrementador;
 		funcionarios.remove(funcionario);
 	}
 	
-	public void modificar(int index,String cpf, String nome, String endereco, String telefone) {
+	public void modificar(int index,String cpf, String nome, String endereco, String telefone) throws FuncJaInseridoException{
+		
+		for (Funcionario funcionario_ : funcionarios) {
+			if(funcionario_.getCodigo().equals(funcionarios.get(index).getCodigo()) && funcionario_ != funcionarios.get(index)) {
+				throw new FuncJaInseridoException(funcionario_.getCodigo());
+			}
+		}
+		
 		funcionarios.get(index).setCpf(cpf);
 		funcionarios.get(index).setNome(nome);
 		funcionarios.get(index).setEndereco(endereco);
